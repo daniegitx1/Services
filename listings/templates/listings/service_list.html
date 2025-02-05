@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Village Services</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <!-- Navigation Menu -->
+    <nav>
+        <button onclick="window.location.href='{% url 'service_list' %}'">View Listings</button>
+        <button onclick="window.location.href='{% url 'add_listing' %}'">Add New Listing</button>
+    </nav>
+
+    <h1>Village Services</h1>
+
+    <!-- Dropdown to Filter Listings -->
+    <form method="GET" class="filter-form">
+        <label for="category">Filter by Category:</label>
+        <select name="category" id="category" onchange="this.form.submit()">
+            <option value="All" {% if selected_category == "All" %}selected{% endif %}>All Listings</option>
+            {% for category in categories %}
+                <option value="{{ category.name }}" {% if selected_category == category.name %}selected{% endif %}>
+                    {{ category.name }}
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+
+    <!-- Listings Container -->
+    <div class="listings-container">
+        {% if selected_category == "All" %}
+            {% for category in categories %}
+                {% with category_listings=listings|dictsort:"category.name" %}
+                    {% if category_listings|length > 0 %}
+                        <h2>{{ category.name }}</h2>
+                        <ul>
+                            {% for listing in listings %}
+                                {% if listing.category == category %}
+                                    <li class="listing-item">
+                                        <strong>{{ listing.post_title }}</strong><br>
+                                        {{ listing.summary }}<br>
+
+                                        <!-- Display Image -->
+                                        {% if listing.picture %}
+                                            <a href="{{ listing.picture.url }}" target="_blank">
+                                                <img src="{{ listing.picture.url }}" alt="{{ listing.post_title }}">
+                                            </a>
+                                        {% endif %}
+
+                                        <!-- Display Client Details on Separate Lines -->
+                                        <div class="client-info">
+                                            {% if listing.client_name %}
+                                                <p><strong>Client Name:</strong> {{ listing.client_name }}</p>
+                                            {% endif %}
+                                            {% if listing.phone_number %}
+                                                <p><strong>Phone:</strong> {{ listing.phone_number }}</p>
+                                            {% endif %}
+                                            {% if listing.email %}
+                                                <p><strong>Email:</strong> <a href="mailto:{{ listing.email }}">{{ listing.email }}</a></p>
+                                            {% endif %}
+                                            {% if listing.website %}
+                                                <p><strong>Website:</strong> <a href="{{ listing.website }}" target="_blank">Visit Website</a></p>
+                                            {% endif %}
+                                        </div>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
+            {% endfor %}
+        {% else %}
+            <h2>{{ selected_category }}</h2>
+            <ul>
+                {% for listing in listings %}
+                    <li class="listing-item">
+                        <strong>{{ listing.post_title }}</strong><br>
+                        {{ listing.summary }}<br>
+
+                        <!-- Display Image -->
+                        {% if listing.picture %}
+                            <a href="{{ listing.picture.url }}" target="_blank">
+                                <img src="{{ listing.picture.url }}" alt="{{ listing.post_title }}">
+                            </a>
+                        {% endif %}
+
+                        <!-- Display Client Details on Separate Lines -->
+                        <div class="client-info">
+                            {% if listing.client_name %}
+                                <p><strong>Client Name:</strong> {{ listing.client_name }}</p>
+                            {% endif %}
+                            {% if listing.phone_number %}
+                                <p><strong>Phone:</strong> {{ listing.phone_number }}</p>
+                            {% endif %}
+                            {% if listing.email %}
+                                <p><strong>Email:</strong> <a href="mailto:{{ listing.email }}">{{ listing.email }}</a></p>
+                            {% endif %}
+                            {% if listing.website %}
+                                <p><strong>Website:</strong> <a href="{{ listing.website }}" target="_blank">Visit Website</a></p>
+                            {% endif %}
+                        </div>
+                    </li>
+                {% empty %}
+                    <li>No listings available in this category.</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+</body>
+</html>
+

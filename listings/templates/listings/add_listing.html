@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add a Listing</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <!-- Navigation Menu -->
+    <nav>
+        <button onclick="window.location.href='{% url 'service_list' %}'">View Listings</button>
+        <button onclick="window.location.href='{% url 'add_listing' %}'">Add New Listing</button>
+    </nav>
+
+    <h1>Add a Service Listing</h1>
+
+    <!-- Apply class directly to form to center it -->
+    <form class="form-container" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+
+    <a href="{% url 'service_list' %}">Back to Listings</a>
+</body>
+</html>

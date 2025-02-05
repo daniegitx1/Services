@@ -1,0 +1,129 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    text-align: center; /* Keep headings centered */
+}
+
+/* Centered Containers */
+.form-container,
+.listings-container {
+    width: 50%; /* Adjust width */
+    max-width: 800px; /* Prevents it from getting too wide */
+    margin: 40px auto; /* Centers the div */
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: left; /* Ensures text inside is left-aligned */
+}
+
+/* Form Styles */
+.form-container p {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.form-container label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-container input,
+.form-container textarea,
+.form-container select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.form-container button {
+    margin-top: 15px;
+    background: #ff6600;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.form-container button:hover {
+    background: #cc5500;
+}
+
+/* Center "Back to Listings" link */
+a {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    color: #007BFF;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Listings Styles */
+.listings-container ul {
+    list-style: none; /* Removes default bullet points */
+    padding: 0;
+}
+
+.listing-item {
+    background: #f9f9f9;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: left; /* Ensure all text is left-aligned */
+}
+
+/* Images Inside Listings */
+.listing-item img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+/* Dropdown Filter */
+.filter-form {
+    width: 50%;
+    max-width: 800px;
+    margin: 20px auto;
+    text-align: left;
+}
+
+.filter-form select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Client Information Styles */
+.client-info {
+    text-align: left;
+    margin-top: 10px;
+}
+
+.client-info p {
+    margin: 5px 0; /* Add spacing between lines */
+}
+
+.client-info a {
+    color: #007BFF;
+    text-decoration: none;
+    display: inline-block;
+    text-align: left;
+}
+
+.client-info a:hover {
+    text-decoration: underline;
+}
