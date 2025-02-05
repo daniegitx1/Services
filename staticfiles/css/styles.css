@@ -10,7 +10,7 @@ body {
 /* Centered Containers */
 .form-container,
 .listings-container {
-    width: 50%; /* Adjust width */
+    width: 65%; /* Adjust width */
     max-width: 800px; /* Prevents it from getting too wide */
     margin: 40px auto; /* Centers the div */
     background: white;
@@ -77,8 +77,8 @@ a:hover {
 }
 
 .listing-item {
-    background: #f9f9f9;
-    margin: 10px 0;
+    background: #ececec;
+    margin: 20px 0;
     padding: 15px;
     border-radius: 5px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
@@ -126,4 +126,60 @@ a:hover {
 
 .client-info a:hover {
     text-decoration: underline;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+    background-color: #007bff;
+    border-bottom: 2px solid #ddd;
+}
+
+nav button {
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+nav button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+nav button:active {
+    background-color: #00408d;
+    transform: scale(0.98);
+}
+
+/* Style the label text */
+.filter-form label {
+    font-size: 18px; /* Make label text larger */
+    font-weight: bold; /* Optional: Make it bold */
+}
+
+/* Style the dropdown */
+#category {
+    font-size: 18px; /* Increase dropdown text size */
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Make both label and dropdown even bigger on small screens */
+@media (max-width: 600px) {
+    .filter-form label {
+        font-size: 20px; /* Larger label on mobile */
+    }
+
+    #category {
+        font-size: 20px; /* Larger dropdown on mobile */
+        padding: 12px;
+    }
 }

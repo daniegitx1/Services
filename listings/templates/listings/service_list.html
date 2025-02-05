@@ -7,12 +7,16 @@
 </head>
 <body>
     <!-- Navigation Menu -->
-    <nav>
-        <button onclick="window.location.href='{% url 'service_list' %}'">View Listings</button>
-        <button onclick="window.location.href='{% url 'add_listing' %}'">Add New Listing</button>
-    </nav>
+<nav>
+    <button onclick="window.location.href='{% url 'service_list' %}'">View Listings</button>
+    <button onclick="window.location.href='{% url 'add_listing' %}'">Add New Listing</button>
+</nav>
 
-    <h1>Village Services</h1>
+
+
+    <h1>Village Services Listing</h1>
+    <p>(free until 1 June 2025)</p>
+    <br><hr><br>
 
     <!-- Dropdown to Filter Listings -->
     <form method="GET" class="filter-form">
@@ -38,9 +42,14 @@
                             {% for listing in listings %}
                                 {% if listing.category == category %}
                                     <li class="listing-item">
-                                        <strong>{{ listing.post_title }}</strong><br>
-                                        {{ listing.summary }}<br>
-
+                                        <strong style="color: #cc5500;">{{ listing.post_title }}</strong><br><br>
+                                         {% if listing.summary %}
+                                             {{ listing.summary }}<br>
+                                         {% endif %}
+                                        {% if listing.description %}
+                                            <p>{{ listing.description }}</p>
+                                        {% endif %}
+                                        <br>
                                         <!-- Display Image -->
                                         {% if listing.picture %}
                                             <a href="{{ listing.picture.url }}" target="_blank">
@@ -51,8 +60,8 @@
                                         <!-- Display Client Details on Separate Lines -->
                                         <div class="client-info">
                                             {% if listing.client_name %}
-                                                <p><strong>Client Name:</strong> {{ listing.client_name }}</p>
-                                            {% endif %}
+                                                <p><strong>Listed by:</strong> {{ listing.client_name }}</p>
+                                            {% endif %}<br>
                                             {% if listing.phone_number %}
                                                 <p><strong>Phone:</strong> {{ listing.phone_number }}</p>
                                             {% endif %}
@@ -75,9 +84,14 @@
             <ul>
                 {% for listing in listings %}
                     <li class="listing-item">
-                        <strong>{{ listing.post_title }}</strong><br>
-                        {{ listing.summary }}<br>
-
+                        <strong style="color: #cc5500;">{{ listing.post_title }}</strong><br><br>
+                        {% if listing.summary %}
+                            {{ listing.summary }}<br>
+                        {% endif %}
+                        {% if listing.description %}
+                            <p>{{ listing.description }}</p>
+                        {% endif %}
+                        <br>
                         <!-- Display Image -->
                         {% if listing.picture %}
                             <a href="{{ listing.picture.url }}" target="_blank">
@@ -88,8 +102,8 @@
                         <!-- Display Client Details on Separate Lines -->
                         <div class="client-info">
                             {% if listing.client_name %}
-                                <p><strong>Client Name:</strong> {{ listing.client_name }}</p>
-                            {% endif %}
+                                <p><strong>Listed by:</strong> {{ listing.client_name }}</p>
+                            {% endif %}<br>
                             {% if listing.phone_number %}
                                 <p><strong>Phone:</strong> {{ listing.phone_number }}</p>
                             {% endif %}
