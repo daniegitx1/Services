@@ -1,26 +1,35 @@
-<!DOCTYPE html>
+<!<!DOCTYPE html>
 <html>
 <head>
     <title>Village Services</title>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        .image-container {
+            text-align: left; /* Ensures it aligns with the text */
+            margin-bottom: 10px;
+        }
+
+        .image-container img {
+            display: block; /* Places image on its own line */
+            max-width: 200px; /* Adjust size as needed */
+        }
+    </style>
 </head>
 <body>
+
     <!-- Navigation Menu -->
-<nav>
-    <button onclick="window.location.href='{% url 'service_list' %}'">View Listings</button>
-    <button onclick="window.location.href='{% url 'add_listing' %}'">Add New Listing</button>
-</nav>
-
-
-
-    <h1>Village Services Listing</h1>
-    <p>(free until 1 June 2025)</p>
-    <br><hr><br>
+    <nav>
+        <button onclick="window.location.href='https://www.scarborough.africa/visitors/'">Home</button>
+        <button onclick="location.href='{% url 'service_list' %}'">View Listings</button>
+        <button onclick="location.href='{% url 'add_listing' %}'">Add New Listing</button>
+    </nav>
+    <br>
 
     <!-- Dropdown to Filter Listings -->
     <form method="GET" class="filter-form">
-        <label for="category">Filter by Category:</label>
+        <label for="category">Search by Category:</label>
         <select name="category" id="category" onchange="this.form.submit()">
             <option value="All" {% if selected_category == "All" %}selected{% endif %}>All Listings</option>
             {% for category in categories %}
@@ -43,33 +52,36 @@
                                 {% if listing.category == category %}
                                     <li class="listing-item">
                                         <strong style="color: #cc5500;">{{ listing.post_title }}</strong><br><br>
-                                         {% if listing.summary %}
-                                             {{ listing.summary }}<br>
-                                         {% endif %}
+
+                                        {% if listing.picture %}
+                                            <div class="image-container">
+                                                <a href="{{ listing.picture.url }}" target="_blank">
+                                                    <img src="{{ listing.picture.url }}" alt="{{ listing.post_title }}">
+                                                </a><br>
+                                            </div>
+                                        {% endif %}
+
+                                        {% if listing.summary %}
+                                        <p><strong>{{ listing.summary }}</strong></p>
+                                        {% endif %}
+
                                         {% if listing.description %}
                                             <p>{{ listing.description }}</p>
-                                        {% endif %}
-                                        <br>
-                                        <!-- Display Image -->
-                                        {% if listing.picture %}
-                                            <a href="{{ listing.picture.url }}" target="_blank">
-                                                <img src="{{ listing.picture.url }}" alt="{{ listing.post_title }}">
-                                            </a>
                                         {% endif %}
 
                                         <!-- Display Client Details on Separate Lines -->
                                         <div class="client-info">
                                             {% if listing.client_name %}
-                                                <p><strong>Listed by:</strong> {{ listing.client_name }}</p>
-                                            {% endif %}<br>
+                                                <p>Listed by: {{ listing.client_name }}</p><br>
+                                            {% endif %}
                                             {% if listing.phone_number %}
-                                                <p><strong>Phone:</strong> {{ listing.phone_number }}</p>
+                                                <p>Phone: {{ listing.phone_number }}</p>
                                             {% endif %}
                                             {% if listing.email %}
-                                                <p><strong>Email:</strong> <a href="mailto:{{ listing.email }}">{{ listing.email }}</a></p>
+                                                <p>Email: <a href="mailto:{{ listing.email }}">{{ listing.email }}</a></p>
                                             {% endif %}
                                             {% if listing.website %}
-                                                <p><strong>Website:</strong> <a href="{{ listing.website }}" target="_blank">Visit Website</a></p>
+                                                <p>Website: <a href="{{ listing.website }}" target="_blank">Visit</a></p>
                                             {% endif %}
                                         </div>
                                     </li>
@@ -85,33 +97,36 @@
                 {% for listing in listings %}
                     <li class="listing-item">
                         <strong style="color: #cc5500;">{{ listing.post_title }}</strong><br><br>
-                        {% if listing.summary %}
-                            {{ listing.summary }}<br>
+
+                        {% if listing.picture %}
+                            <div class="image-container">
+                                <a href="{{ listing.picture.url }}" target="_blank">
+                                    <img src="{{ listing.picture.url }}" alt="{{ listing.post_title }}">
+                                </a><br>
+                            </div>
                         {% endif %}
+
+                        {% if listing.summary %}
+                            <p><strong>{{ listing.summary }}</strong></p>
+                        {% endif %}
+
                         {% if listing.description %}
                             <p>{{ listing.description }}</p>
-                        {% endif %}
-                        <br>
-                        <!-- Display Image -->
-                        {% if listing.picture %}
-                            <a href="{{ listing.picture.url }}" target="_blank">
-                                <img src="{{ listing.picture.url }}" alt="{{ listing.post_title }}">
-                            </a>
                         {% endif %}
 
                         <!-- Display Client Details on Separate Lines -->
                         <div class="client-info">
                             {% if listing.client_name %}
-                                <p><strong>Listed by:</strong> {{ listing.client_name }}</p>
-                            {% endif %}<br>
+                                <p>Listed by {{ listing.client_name }}</p><br>
+                            {% endif %}
                             {% if listing.phone_number %}
-                                <p><strong>Phone:</strong> {{ listing.phone_number }}</p>
+                                <p>Phone: {{ listing.phone_number }}</p>
                             {% endif %}
                             {% if listing.email %}
-                                <p><strong>Email:</strong> <a href="mailto:{{ listing.email }}">{{ listing.email }}</a></p>
+                                <p>Email: <a href="mailto:{{ listing.email }}">{{ listing.email }}</a></p>
                             {% endif %}
                             {% if listing.website %}
-                                <p><strong>Website:</strong> <a href="{{ listing.website }}" target="_blank">Visit Website</a></p>
+                                <p>Website: <a href="{{ listing.website }}" target="_blank">Visit</a></p>
                             {% endif %}
                         </div>
                     </li>
@@ -123,4 +138,5 @@
     </div>
 </body>
 </html>
+
 

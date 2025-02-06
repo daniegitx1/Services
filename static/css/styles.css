@@ -1,6 +1,7 @@
 /* General Styles */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', Arial, sans-serif;
+    color: #595959;
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
@@ -44,7 +45,7 @@ body {
 
 .form-container button {
     margin-top: 15px;
-    background: #ff6600;
+    background: #0033cc;
     color: white;
     padding: 10px;
     border: none;
@@ -110,6 +111,7 @@ a:hover {
 /* Client Information Styles */
 .client-info {
     text-align: left;
+    font-size: 16px;
     margin-top: 10px;
 }
 
@@ -132,18 +134,18 @@ nav {
     display: flex;
     justify-content: center;
     gap: 20px;
-    padding: 20px;
-    background-color: #007bff;
-    border-bottom: 2px solid #ddd;
+    padding: 50px;
+    background-color: #dddddd;
+    border-bottom: 1px solid #c5c5c5;
 }
 
 nav button {
-    background-color: #007bff;
+    background-color: #4a6cda;
     color: white;
     font-size: 16px;
     padding: 12px 20px;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
 }
@@ -182,4 +184,63 @@ nav button:active {
         font-size: 20px; /* Larger dropdown on mobile */
         padding: 12px;
     }
+
+    nav button {
+        font-size: 18px;
+    }
 }
+
+/* Full Listing Section Styles */
+#full-listing-section {
+    display: none; /* Hide by default */
+    background-color: #f9f9f9;  /* Light grey background */
+    border: 2px solid #ddd;  /* Light grey border */
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 8px;  /* Rounded corners */
+}
+
+/* Section heading */
+#full-listing-section h3 {
+    color: #cc5500; /* Highlight heading in orange */
+    margin-bottom: 10px;
+}
+
+/* Divider */
+.divider {
+    height: 2px;
+    background-color: #ddd;
+    margin-bottom: 15px;
+}
+
+/* Explicitly define the toggle button styles */
+.toggle-btn {
+    background-color: #d1d5db; /* Default Grey */
+    color: #333;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    width: auto; /* Prevents full-width issue */
+    display: inline-block;
+}
+
+/* Selected (Active) Button */
+.toggle-btn.active {
+    background-color: #2563eb; /* Blue */
+    color: white;
+}
+
+/* Hover effect */
+.toggle-btn:hover {
+    background-color: #93c5fd; /* Lighter blue */
+}
+
+/* Ensure other buttons don't inherit incorrect styles */
+.form-container button:not(.toggle-btn) {
+    width: 100%; /* Keep form submit button full width */
+}
+

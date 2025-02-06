@@ -4,23 +4,124 @@
     <title>Add a Listing</title>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Navigation Menu -->
-    <nav>
-        <button onclick="window.location.href='{% url 'service_list' %}'">View Listings</button>
-        <button onclick="window.location.href='{% url 'add_listing' %}'">Add New Listing</button>
-    </nav>
 
-    <h1>Add a Service Listing</h1>
+<nav>
+    <button onclick="window.location.href='https://www.scarborough.africa/visitors/'">Home</button>
+    <button onclick="window.location.href='{% url 'service_list' %}'">View Listings</button>
+    <button onclick="window.location.href='{% url 'add_listing' %}'">Add New Listing</button>
+</nav>
 
-    <!-- Apply class directly to form to center it -->
-    <form class="form-container" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Submit</button>
-    </form>
+<form class="form-container" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
 
-    <a href="{% url 'service_list' %}">Back to Listings</a>
+    <!-- Listing Type Selection (Two-Button Toggle) -->
+    <label class="block text-sm font-medium text-gray-700 mb-2">Listing Type:</label>
+    <div class="inline-flex border border-gray-300 rounded-lg overflow-hidden">
+        <button type="button" id="standard-btn"
+                class="toggle-btn px-6 py-2 border-r border-gray-300 transition-all bg-blue-500 text-white"
+                onclick="selectListingType('standard')">
+            Standard Listing
+        </button>
+
+        <button type="button" id="full-btn"
+                class="toggle-btn px-6 py-2 transition-all bg-gray-200 text-gray-700"
+                onclick="selectListingType('full')">
+            Full Listing
+        </button>
+    </div>
+
+    <!-- Hidden Input for Form Submission -->
+    <input type="hidden" name="type" id="listing-type" value="standard">
+
+    <!-- General Fields (Always Visible) -->
+    <label for="duration">Duration (Months):</label>
+    {{ form.duration }}
+
+    {{ form.category.label_tag }} {{ form.category }}
+    {{ form.post_title.label_tag }} {{ form.post_title }}
+    {{ form.summary.label_tag }} {{ form.summary }}
+    {{ form.client_name.label_tag }} {{ form.client_name }}
+    {{ form.phone_number.label_tag }} {{ form.phone_number }}
+    {{ form.email.label_tag }} {{ form.email }}
+    {{ form.website.label_tag }} {{ form.website }}
+
+    <!-- Full Listing Extra Fields (Hidden by Default, Appears at Bottom) -->
+    <div id="full-listing-section" style="display: none; margin-top: 20px;">
+        <h3 class="text-lg font-semibold text-gray-800">Extra Details for Full Listing</h3>
+        <div class="divider"></div>
+
+        <div id="description-field">
+            {{ form.description.label_tag }} {{ form.description }}
+        </div>
+
+        <div id="picture-field">
+            {{ form.picture.label_tag }} {{ form.picture }}
+        </div>
+    </div>
+
+    <!-- Submit Button (Always at the Bottom) -->
+    <button type="submit" class="mt-4 px-4 py-2 bg-green-500 text-white rounded">Submit</button>
+
+</form>
+
+<!-- JavaScript -->
+<script>
+    function selectListingType(type) {
+        // Set hidden input value
+        document.getElementById("listing-type").value = type;
+
+        // Get buttons and full listing section
+        let standardBtn = document.getElementById("standard-btn");
+        let fullBtn = document.getElementById("full-btn");
+        let fullListingSection = document.getElementById("full-listing-section");
+
+        // Reset button styles (default: grey)
+        standardBtn.classList.remove("bg-blue-500", "text-white");
+        standardBtn.classList.add("bg-gray-200", "text-gray-700");
+
+        fullBtn.classList.remove("bg-blue-500", "text-white");
+        fullBtn.classList.add("bg-gray-200", "text-gray-700");
+
+        // Highlight selected button and toggle full listing section
+        if (type === "standard") {
+            standardBtn.classList.add("bg-blue-500", "text-white");
+            standardBtn.classList.remove("bg-gray-200", "text-gray-700");
+            fullListingSection.style.display = "none";
+        } else {
+            fullBtn.classList.add("bg-blue-500", "text-white");
+            fullBtn.classList.remove("bg-gray-200", "text-gray-700");
+            fullListingSection.style.display = "block";
+        }
+    }
+
+    // Ensure correct state on page load
+    document.addEventListener("DOMContentLoaded", function () {
+        selectListingType("standard"); // Default selection
+    });
+</script>
+
+<!-- Styling -->
+<style>
+    .toggle-btn {
+        font-size: 16px;
+        font-weight: 600;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 10px 20px;
+        transition: background-color 0.2s ease-in-out;
+    }
+
+    .divider {
+        height: 1px;
+        background-color: #ddd;
+        margin: 10px 0;
+    }
+</style>
+
 </body>
 </html>
+

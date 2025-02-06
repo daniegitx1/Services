@@ -2,10 +2,18 @@ from django import forms
 from .models import Listing
 
 class ListingForm(forms.ModelForm):
-    start_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
-    end_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    duration = forms.IntegerField(
+        min_value=1,
+        label="Duration (Months)",
+        widget=forms.NumberInput(attrs={'id': 'duration', 'onchange': 'calculateEndDate()'})
+    )
 
     class Meta:
         model = Listing
-        fields = '__all__'
+        fields = ['type', 'category', 'post_title', 'summary', 'description', 'client_name',
+                  'phone_number', 'email', 'website', 'picture', 'duration']
 
+        widgets = {
+            'start_date': forms.HiddenInput(),
+            'end_date': forms.HiddenInput(),
+        }

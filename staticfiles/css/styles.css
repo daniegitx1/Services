@@ -1,6 +1,6 @@
 /* General Styles */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', Arial, sans-serif;
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
@@ -44,7 +44,7 @@ body {
 
 .form-container button {
     margin-top: 15px;
-    background: #ff6600;
+    background: #0033cc;
     color: white;
     padding: 10px;
     border: none;
@@ -110,6 +110,7 @@ a:hover {
 /* Client Information Styles */
 .client-info {
     text-align: left;
+    font-size: 16px;
     margin-top: 10px;
 }
 
@@ -132,18 +133,18 @@ nav {
     display: flex;
     justify-content: center;
     gap: 20px;
-    padding: 20px;
-    background-color: #007bff;
-    border-bottom: 2px solid #ddd;
+    padding: 50px;
+    background-color: #dddddd;
+    border-bottom: 1px solid #c5c5c5;
 }
 
 nav button {
-    background-color: #007bff;
+    background-color: #4a6cda;
     color: white;
     font-size: 16px;
     padding: 12px 20px;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
 }
@@ -181,5 +182,9 @@ nav button:active {
     #category {
         font-size: 20px; /* Larger dropdown on mobile */
         padding: 12px;
+    }
+
+    nav button {
+        font-size: 18px;
     }
 }
