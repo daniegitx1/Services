@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-xddd$f))%ee7((z#h17@2)8z8-6af9!59=1cq$1)4a*ly^g0i6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['scarborough.africa', '102.130.116.251', 'localhost']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'listings',
+    'services'
 ]
 
 

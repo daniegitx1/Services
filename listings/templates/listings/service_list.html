@@ -1,142 +1,321 @@
-<!<!DOCTYPE html>
-<html>
+{% load static %}
+{% load custom_filters %}
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Village Services</title>
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
     <style>
-        .image-container {
-            text-align: left; /* Ensures it aligns with the text */
-            margin-bottom: 10px;
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f1f5f6;
+        font-size: 0.85rem;
+    }
+
+    .main-wrapper {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 1rem;
+    }
+
+    .row > [class*='col-'] {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .nav-bar {
+        background-color: #145eae;
+        padding: 0.75rem 1rem;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .nav-btn-custom {
+        background-color: #ffffff;
+        color: #145eae;
+        border: 1px solid #cfd7df;
+        border-radius: 6px;
+        height: 32px;
+        line-height: 32px;
+        padding: 0 12px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .nav-btn-custom:hover {
+        background-color: #e7f0fa;
+        color: #0d498d;
+    }
+
+    .nav-btn-custom.active {
+        background-color: #e2e6ea;
+        color: black;
+        border-color: #ced4da;
+        pointer-events: none;
+    }
+
+    .sidebar {
+        background-color: #ffffff;
+        padding: 0.5rem 0.75rem 0.25rem 0.75rem;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        text-align: left;
+    }
+
+    .sidebar a,
+    .sidebar span {
+        display: block;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.9rem;
+        border-radius: 4px;
+        text-align: left;
+        margin: 0;
+    }
+
+    .sidebar a {
+        color: #1d84f3;
+        font-weight: 400;
+        text-decoration: none;
+    }
+
+    .sidebar a.active,
+    .sidebar a:hover {
+        background-color: #e7f0fa;
+    }
+
+    .sidebar span {
+        color: #999;
+        font-weight: normal;
+        cursor: default;
+    }
+
+    .section-title {
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: #4b4e51;
+        margin: 0 0 0.75rem 0;
+        padding-bottom: 0.25rem;
+        border-bottom: 1px solid #ccc;
+        text-align: left;
+    }
+
+    .listing-card {
+    background-color: #ffffff;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.75rem;
+    margin-left: 30px;  /* ✅ new indent */
+    text-align: left;
+    border-radius: 4px;
+    border-left: 8px solid transparent;
+    box-shadow: none;
+}
+
+
+    .listing-card.border-highlight {
+        border-left-color: #779def;
+    }
+
+    .listing-card.border-muted {
+        border-left-color: #d0e6fb;
+    }
+
+    .listing-card.border-emergency {
+    border-left-color: #fd8376; /* red */
+}
+
+
+    .listing-card img {
+        max-width: 120px;
+        max-height: 120px;
+        object-fit: cover;
+        border-radius: 6px;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    .listing-card h5 {
+        font-size: 1rem;
+        margin-bottom: 0.4rem;
+    }
+
+    .listing-card p {
+        margin-bottom: 0.3rem;
+    }
+
+    .listing-card a {
+        display: inline;
+        text-align: left;
+    }
+
+    @media (max-width: 768px) {
+        .sidebar {
+            display: none !important;
         }
 
-        .image-container img {
-            display: block; /* Places image on its own line */
-            max-width: 200px; /* Adjust size as needed */
+        .main-wrapper {
+            padding: 1rem;
         }
+
+        .row {
+            flex-direction: column;
+        }
+
+        .col-md-3,
+        .col-md-9 {
+            width: 100%;
+            max-width: 100%;
+            flex: 0 0 100%;
+        }
+
+        .nav-bar {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.5rem;
+        }
+
+        .nav-btn-custom {
+            width: 100%;
+            text-align: center;
+        }
+
+        .nav-bar form {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav-bar input[type="text"] {
+            flex: 1;
+        }
+
+        .nav-bar button {
+            margin-left: 0.5rem;
+        }
+    }
     </style>
 </head>
+
 <body>
 
-    <!-- Navigation Menu -->
-    <nav>
-        <button onclick="window.location.href='https://www.scarborough.africa/visitors/'">Home</button>
-        <button onclick="location.href='{% url 'service_list' %}'">View Listings</button>
-        <button onclick="location.href='{% url 'add_listing' %}'">Add New Listing</button>
-    </nav>
-    <br>
+<!-- Navigation Bar -->
+<div class="nav-bar d-flex justify-content-between align-items-center flex-wrap">
+    <div class="d-flex align-items-center gap-2 flex-wrap">
+        <a href="{% url 'service_list' %}" class="nav-btn-custom {% if request.resolver_match.url_name == 'service_list' %}active{% endif %}">View Listings</a>
+        <a href="{% url 'add_listing' %}" class="nav-btn-custom {% if request.resolver_match.url_name == 'add_listing' %}active{% endif %}" style="margin-right: 240px;">Add New Listing</a>
 
-    <!-- Dropdown to Filter Listings -->
-    <form method="GET" class="filter-form">
-        <label for="category">Search by Category:</label>
-        <select name="category" id="category" onchange="this.form.submit()">
-            <option value="All" {% if selected_category == "All" %}selected{% endif %}>All Listings</option>
-            {% for category in categories %}
-                <option value="{{ category.name }}" {% if selected_category == category.name %}selected{% endif %}>
-                    {{ category.name }}
-                </option>
-            {% endfor %}
-        </select>
-    </form>
-
-    <!-- Listings Container -->
-    <div class="listings-container">
-        {% if selected_category == "All" %}
-            {% for category in categories %}
-                {% with category_listings=listings|dictsort:"category.name" %}
-                    {% if category_listings|length > 0 %}
-                        <h2>{{ category.name }}</h2>
-                        <ul>
-                            {% for listing in listings %}
-                                {% if listing.category == category %}
-                                    <li class="listing-item">
-                                        <strong style="color: #cc5500;">{{ listing.post_title }}</strong><br><br>
-
-                                        {% if listing.picture %}
-                                            <div class="image-container">
-                                                <a href="{{ listing.picture.url }}" target="_blank">
-                                                    <img src="{{ listing.picture.url }}" alt="{{ listing.post_title }}">
-                                                </a><br>
-                                            </div>
-                                        {% endif %}
-
-                                        {% if listing.summary %}
-                                        <p><strong>{{ listing.summary }}</strong></p>
-                                        {% endif %}
-
-                                        {% if listing.description %}
-                                            <p>{{ listing.description }}</p>
-                                        {% endif %}
-
-                                        <!-- Display Client Details on Separate Lines -->
-                                        <div class="client-info">
-                                            {% if listing.client_name %}
-                                                <p>Listed by: {{ listing.client_name }}</p><br>
-                                            {% endif %}
-                                            {% if listing.phone_number %}
-                                                <p>Phone: {{ listing.phone_number }}</p>
-                                            {% endif %}
-                                            {% if listing.email %}
-                                                <p>Email: <a href="mailto:{{ listing.email }}">{{ listing.email }}</a></p>
-                                            {% endif %}
-                                            {% if listing.website %}
-                                                <p>Website: <a href="{{ listing.website }}" target="_blank">Visit</a></p>
-                                            {% endif %}
-                                        </div>
-                                    </li>
-                                {% endif %}
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                {% endwith %}
-            {% endfor %}
-        {% else %}
-            <h2>{{ selected_category }}</h2>
-            <ul>
-                {% for listing in listings %}
-                    <li class="listing-item">
-                        <strong style="color: #cc5500;">{{ listing.post_title }}</strong><br><br>
-
-                        {% if listing.picture %}
-                            <div class="image-container">
-                                <a href="{{ listing.picture.url }}" target="_blank">
-                                    <img src="{{ listing.picture.url }}" alt="{{ listing.post_title }}">
-                                </a><br>
-                            </div>
-                        {% endif %}
-
-                        {% if listing.summary %}
-                            <p><strong>{{ listing.summary }}</strong></p>
-                        {% endif %}
-
-                        {% if listing.description %}
-                            <p>{{ listing.description }}</p>
-                        {% endif %}
-
-                        <!-- Display Client Details on Separate Lines -->
-                        <div class="client-info">
-                            {% if listing.client_name %}
-                                <p>Listed by {{ listing.client_name }}</p><br>
-                            {% endif %}
-                            {% if listing.phone_number %}
-                                <p>Phone: {{ listing.phone_number }}</p>
-                            {% endif %}
-                            {% if listing.email %}
-                                <p>Email: <a href="mailto:{{ listing.email }}">{{ listing.email }}</a></p>
-                            {% endif %}
-                            {% if listing.website %}
-                                <p>Website: <a href="{{ listing.website }}" target="_blank">Visit</a></p>
-                            {% endif %}
-                        </div>
-                    </li>
-                {% empty %}
-                    <li>No listings available in this category.</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
+        <!-- Sort buttons moved left -->
+        <a href="?{% if selected_category and selected_category != 'All' %}category={{ selected_category }}&{% endif %}{% if search_query %}search={{ search_query }}&{% endif %}sort=" class="nav-btn-custom {% if not sort_order %}active{% endif %}">sort A&gt;B</a>
+        <a href="?{% if selected_category and selected_category != 'All' %}category={{ selected_category }}&{% endif %}{% if search_query %}search={{ search_query }}&{% endif %}sort=oldest" class="nav-btn-custom {% if sort_order == 'oldest' %}active{% endif %}">sort Old&gt;New</a>
+        <a href="?{% if selected_category and selected_category != 'All' %}category={{ selected_category }}&{% endif %}{% if search_query %}search={{ search_query }}&{% endif %}sort=newest" class="nav-btn-custom {% if sort_order == 'newest' %}active{% endif %}">sort New&gt;Old</a>
     </div>
+
+    <!-- Search bar remains right-aligned -->
+    <form method="get" action="{% url 'service_list' %}" class="d-flex align-items-center mt-2 mt-md-0" style="gap: 0.4rem;">
+        <input type="text" name="search" class="form-control"
+               style="height: 32px; font-size: 0.85rem; padding: 0 0.5rem;"
+               placeholder="Search..." value="{{ request.GET.search }}">
+        {% if selected_category and selected_category != "All" %}
+            <input type="hidden" name="category" value="{{ selected_category }}">
+        {% endif %}
+        {% if sort_order %}
+            <input type="hidden" name="sort" value="{{ sort_order }}">
+        {% endif %}
+        <button type="submit" class="btn btn-outline-light"
+                style="height: 32px; font-size: 0.85rem; padding: 0 0.75rem;">
+            Go
+        </button>
+    </form>
+</div>
+
+
+<!-- Main Content -->
+<div class="main-wrapper">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 d-none d-md-block">
+            <h4 class="section-title">Category</h4>
+            <div class="sidebar">
+                <a href="{% url 'service_list' %}?category=All" class="{% if selected_category == 'All' %}active{% endif %}">All Listings</a>
+                {% for category in categories %}
+                    {% if category.valid_count > 0 %}
+                        <a href="{% url 'service_list' %}?category={{ category.name }}"
+                           class="{% if selected_category == category.name %}active{% endif %}">
+                            {{ category.name }}
+                        </a>
+                    {% else %}
+                        <span>{{ category.name }}</span>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Listings -->
+        <div class="col-md-9">
+            <!-- Mobile Dropdown -->
+            <div class="d-md-none mb-3">
+                <form method="get" action="{% url 'service_list' %}">
+                    <select name="category" class="form-select form-select-sm" onchange="this.form.submit()">
+                        <option value="All" {% if selected_category == "All" %}selected{% endif %}>All Listings</option>
+                        {% for category in categories %}
+                            <option value="{{ category.name }}"
+                                    {% if selected_category == category.name %}selected{% endif %}
+                                    {% if category.valid_count == 0 %}disabled{% endif %}>
+                                {{ category.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    {% if search_query %}
+                        <input type="hidden" name="search" value="{{ search_query }}">
+                    {% endif %}
+                    {% if sort_order %}
+                        <input type="hidden" name="sort" value="{{ sort_order }}">
+                    {% endif %}
+                </form>
+            </div>
+
+            {% if selected_category and selected_category != "All" %}
+                <h3 class="section-title">{{ selected_category }}</h3>
+                {% if search_query %}
+                    <p><strong>Search:</strong> {{ search_query }}</p>
+                    <p><strong>Matching listings:</strong> {{ listings|length }}</p>
+                {% endif %}
+                {% for listing in listings %}
+                    {% include "cards/listing_card.html" %}
+                {% empty %}
+                    <p>No listings available in this category.</p>
+                {% endfor %}
+            {% elif search_query %}
+                <h3 class="section-title">Search results for "{{ search_query }}"</h3>
+                <p><strong>Matching listings:</strong> {{ listings|length }}</p>
+                {% for listing in listings %}
+                    {% include "cards/listing_card.html" %}
+                {% empty %}
+                    <p>No listings match your search.</p>
+                {% endfor %}
+            {% else %}
+                {% for category in categories %}
+                    {% with category_listings=listings|get_category_listings:category %}
+                        {% if category_listings %}
+                            <h4 class="section-title">{{ category.name }}</h4>
+                            {% for listing in category_listings %}
+                                {% include "cards/listing_card.html" %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
-
-

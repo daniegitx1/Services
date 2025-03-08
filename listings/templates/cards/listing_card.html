@@ -1,0 +1,44 @@
+<div class="listing-card
+    {% if listing.category.name == 'Emergencies' %}
+        border-emergency
+    {% elif listing.type == 'full' %}
+        border-highlight
+    {% else %}
+        border-muted
+    {% endif %}">
+
+
+    <h5 class="text-primary">{{ listing.post_title }}</h5>
+
+    {% if listing.picture %}
+        <a href="{{ listing.picture.url }}" target="_blank">
+            <img src="{{ listing.picture.url }}"
+                 alt="{{ listing.post_title }}">
+        </a>
+    {% endif %}
+
+    {% if listing.summary %}
+        <p><strong>{{ listing.summary|truncatewords:100 }}</strong></p>
+    {% endif %}
+
+    {% if listing.description %}
+        <p class="text-muted small">{{ listing.description|truncatewords:500 }}</p>
+    {% endif %}
+
+    <div class="mt-2">
+        {% if listing.client_name %}
+            <p><strong>Listed by:</strong> {{ listing.client_name }}</p>
+        {% endif %}
+        {% if listing.phone_number %}
+            <p><strong>Phone:</strong> {{ listing.phone_number }}</p>
+        {% endif %}
+        {% if listing.email %}
+            <p><strong>Email:</strong> <a href="mailto:{{ listing.email }}">{{ listing.email }}</a></p>
+        {% endif %}
+        {% if listing.website %}
+            <p><strong>Website:</strong> <a href="{{ listing.website }}" target="_blank">Visit</a></p>
+        {% endif %}
+        <p class="text-muted small">List ID {{ listing.id|stringformat:"03d" }}</p>
+
+    </div>
+</div>
