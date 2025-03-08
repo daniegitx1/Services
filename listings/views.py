@@ -1,9 +1,5 @@
 from django.shortcuts import render, redirect
 from .forms import ListingForm
-from .models import Listing, Category
-from datetime import date
-
-
 from django.shortcuts import render
 from .models import Listing, Category
 from datetime import date
