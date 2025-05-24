@@ -3,388 +3,125 @@
 <head>
     <title>Add a Listing</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap" rel="stylesheet">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 
-<!-- Navigation Bar -->
-<div class="nav-bar">
-  <div class="d-flex align-items-center gap-2">
-    <a href="{% url 'service_list' %}" class="nav-btn-custom">View Listings</a>
-    <a href="{% url 'add_listing' %}" class="nav-btn-custom active">Add New Listing</a>
-  </div>
-</div>
+<nav>
+    <button onclick="window.location.href='https://www.scarborough.africa/visitors/'">Home</button>
+    <button onclick="window.location.href='{% url 'service_list' %}'">View Listings</button>
+    <button onclick="window.location.href='{% url 'add_listing' %}'">Add New Listing</button>
+</nav>
 
+<form class="form-container" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
 
+    <!-- Listing Type Selection (Two-Button Toggle) -->
+    <label class="block text-sm font-medium text-gray-700 mb-2">Listing Type:</label>
+    <div class="inline-flex border border-gray-300 rounded-lg overflow-hidden">
+        <button type="button" id="standard-btn"
+                class="toggle-btn px-6 py-2 border-r border-gray-300 transition-all bg-blue-500 text-white"
+                onclick="selectListingType('standard')">
+            Standard Listing
+        </button>
 
-<br>
-<div class="container mt-5 mb-5 p-4 bg-white rounded shadow-sm" style="max-width: 900px; margin: auto;">
-    <h2 class="page-title mb-4">Submit a New Listing</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
+        <button type="button" id="full-btn"
+                class="toggle-btn px-6 py-2 transition-all bg-gray-200 text-gray-700"
+                onclick="selectListingType('full')">
+            Full Listing
+        </button>
+    </div>
 
-        <!-- Listing Type Cards -->
-        <div class="card-selector-container mb-4">
-            <div class="listing-card" id="card-standard" onclick="selectListingType('standard')" tabindex="0" role="button">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Standard Listing</h5>
-                    <p class="card-text">
-                        A standard listing allows a short description of your service, product, or event.<br>
-                        No pictures or logos.<br><br>
-                        <strong>Free until end of July 2025</strong><br>
-                        From 1 August 2025: R80 per month
-                    </p>
-                </div>
-            </div>
+    <!-- Hidden Input for Form Submission -->
+    <input type="hidden" name="type" id="listing-type" value="standard">
 
-            <div class="listing-card" id="card-full" onclick="selectListingType('full')" tabindex="0" role="button">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Full Listing</h5>
-                    <p class="card-text">
-                        A full listing allows a longer description, and you can also upload a single pamphlet, picture or logo.<br>(max 2MB)<br><br>
-                        <strong>Free until end of July 2025</strong><br>
-                        From 1 August 2025: R200 per month
-                    </p>
-                </div>
-            </div>
+    <!-- General Fields (Always Visible) -->
+    <label for="duration">Duration (Months):</label>
+    {{ form.duration }}
+
+    {{ form.category.label_tag }} {{ form.category }}
+    {{ form.post_title.label_tag }} {{ form.post_title }}
+    {{ form.summary.label_tag }} {{ form.summary }}
+    {{ form.client_name.label_tag }} {{ form.client_name }}
+    {{ form.phone_number.label_tag }} {{ form.phone_number }}
+    {{ form.email.label_tag }} {{ form.email }}
+    {{ form.website.label_tag }} {{ form.website }}
+
+    <!-- Full Listing Extra Fields (Hidden by Default, Appears at Bottom) -->
+    <div id="full-listing-section" style="display: none; margin-top: 20px;">
+        <h3 class="text-lg font-semibold text-gray-800">Extra Details for Full Listing</h3>
+        <div class="divider"></div>
+
+        <div id="description-field">
+            {{ form.description.label_tag }} {{ form.description }}
         </div>
 
-        <input type="hidden" name="type" id="listing-type" value="standard">
-<br><br>
-        <!-- General Fields -->
-        <div class="mb-4"><label class="form-label">{{ form.duration.label }}</label>{{ form.duration }}</div>
-        <div class="mb-4"><label class="form-label">{{ form.category.label }}</label>{{ form.category }}</div>
-        <div class="mb-4"><label class="form-label">Post title or topic (max 12 words)</label>{{ form.post_title }}</div>
-        <div class="mb-4"><label class="form-label">Summary of service or product (max 20 words)</label>{{ form.summary }}</div>
-        <div class="mb-4"><label class="form-label">Your name / Company name</label>{{ form.client_name }}</div>
-        <div class="mb-4"><label class="form-label">{{ form.phone_number.label }}</label>{{ form.phone_number }}</div>
-        <div class="mb-4"><label class="form-label">{{ form.email.label }}</label>{{ form.email }}</div>
-        <div class="mb-4"><label class="form-label">{{ form.website.label }}</label>{{ form.website }}</div>
-
-        <!-- Description Field (Always Visible) -->
-        <div id="description-card" class="pt-3 mt-3 border-top mb-4">
-            <label id="description-label" class="form-label mt-3">Description (max 60 words)</label>
-            {{ form.description }}
-            <div id="description-warning" style="display: none; color: red; font-size: 0.9rem; margin-top: 5px;">
-                You've exceeded the allowed word count.
-            </div>
-        </div>
-
-<label id="description-label" class="form-label mt-3">Upload Logo / Picture</label>
-
-<!-- Picture Upload Card (matches width and styling) -->
-<div id="picture-upload-card" class="listing-card mb-4" style="width: 100%;">
-    <div class="card-body">
-        <p class="card-text"></p>
-        {{ form.picture }}
-        <div id="picture-alert" style="display: none; color: red; font-size: 0.9rem; margin-top: 5px;">
-            Picture upload is available for Full Listings only.
-        </div>
-        <div>
-            <small style="color: #555;">Max file size: 2MB. Only JPG or PNG images allowed.</small>
+        <div id="picture-field">
+            {{ form.picture.label_tag }} {{ form.picture }}
         </div>
     </div>
-</div>
 
-        <br><br>
+    <!-- Submit Button (Always at the Bottom) -->
+    <button type="submit" class="mt-4 px-4 py-2 bg-green-500 text-white rounded">Submit</button>
 
-        <div class="mt-5">
-            <button id="submit-button" type="submit" class="submit-btn w-100">Submit Listing</button>
-        </div>
-    </form>
-</div>
+</form>
 
-<br><br><br><br>
-
+<!-- JavaScript -->
 <script>
     function selectListingType(type) {
+        // Set hidden input value
         document.getElementById("listing-type").value = type;
 
-        document.getElementById("card-standard").classList.remove("active");
-        document.getElementById("card-full").classList.remove("active");
+        // Get buttons and full listing section
+        let standardBtn = document.getElementById("standard-btn");
+        let fullBtn = document.getElementById("full-btn");
+        let fullListingSection = document.getElementById("full-listing-section");
 
+        // Reset button styles (default: grey)
+        standardBtn.classList.remove("bg-blue-500", "text-white");
+        standardBtn.classList.add("bg-gray-200", "text-gray-700");
+
+        fullBtn.classList.remove("bg-blue-500", "text-white");
+        fullBtn.classList.add("bg-gray-200", "text-gray-700");
+
+        // Highlight selected button and toggle full listing section
         if (type === "standard") {
-            document.getElementById("card-standard").classList.add("active");
-            document.getElementById("description-label").textContent = "Description (max 60 words)";
+            standardBtn.classList.add("bg-blue-500", "text-white");
+            standardBtn.classList.remove("bg-gray-200", "text-gray-700");
+            fullListingSection.style.display = "none";
         } else {
-            document.getElementById("card-full").classList.add("active");
-            document.getElementById("description-label").textContent = "Description (max 120 words)";
-        }
-
-        validateDescription();
-        updatePictureInput();
-    }
-
-    function countWords(text) {
-        return text.trim().split(/\s+/).filter(word => word.length > 0).length;
-    }
-
-    function validateDescription() {
-        const input = document.getElementById("id_description");
-        const type = document.getElementById("listing-type").value;
-        const maxWords = type === "standard" ? 60 : 120;
-        const warning = document.getElementById("description-warning");
-        const submit = document.getElementById("submit-button");
-
-        const words = countWords(input.value);
-
-        if (words > maxWords) {
-            warning.style.display = "block";
-            submit.disabled = true;
-        } else {
-            warning.style.display = "none";
-            submit.disabled = false;
+            fullBtn.classList.add("bg-blue-500", "text-white");
+            fullBtn.classList.remove("bg-gray-200", "text-gray-700");
+            fullListingSection.style.display = "block";
         }
     }
 
-    function updatePictureInput() {
-        const type = document.getElementById("listing-type").value;
-        const fileInput = document.getElementById("id_picture");
-        const alert = document.getElementById("picture-alert");
-
-        if (!fileInput) return;
-
-        if (type === "standard") {
-            fileInput.addEventListener("click", blockPictureUpload);
-            alert.style.display = "block";
-        } else {
-            fileInput.removeEventListener("click", blockPictureUpload);
-            alert.style.display = "none";
-        }
-    }
-
-    function validatePictureFile() {
-    const fileInput = document.getElementById("id_picture");
-    const submit = document.getElementById("submit-button");
-
-    if (!fileInput || !fileInput.files.length) {
-        return;
-    }
-
-    const file = fileInput.files[0];
-    const validTypes = ["image/jpeg", "image/jpg", "image/png"];
-    const maxSize = 2 * 1024 * 1024; // 2MB
-
-    if (!validTypes.includes(file.type)) {
-        alert("Invalid file type. Only JPG and PNG images are allowed.");
-        fileInput.value = "";
-        submit.disabled = true;
-        return;
-    }
-
-    if (file.size > maxSize) {
-        alert("File is too large. Maximum size is 2MB.");
-        fileInput.value = "";
-        submit.disabled = true;
-        return;
-    }
-
-    // Valid file
-    submit.disabled = false;
-}
-
-
-    function blockPictureUpload(e) {
-        e.preventDefault();
-    }
-
+    // Ensure correct state on page load
     document.addEventListener("DOMContentLoaded", function () {
-        selectListingType("standard");
-        document.getElementById("id_description").addEventListener("input", validateDescription);
-        const fileInput = document.getElementById("id_picture");
-        if (fileInput) {
-            fileInput.addEventListener("change", validatePictureFile);
-        }
-
+        selectListingType("standard"); // Default selection
     });
-
-    document.addEventListener('keydown', function(e) {
-        if ((e.key === 'Enter' || e.key === ' ') && document.activeElement.classList.contains('listing-card')) {
-            const card = document.activeElement;
-            if (card.id === 'card-standard') selectListingType('standard');
-            if (card.id === 'card-full') selectListingType('full');
-            e.preventDefault();
-        }
-    });
-
-document.querySelector("form").addEventListener("submit", function (e) {
-    const title = document.querySelector('[name="post_title"]').value.trim();
-    const summary = document.querySelector('[name="summary"]').value.trim();
-
-    const titleWordCount = title.split(/\s+/).filter(Boolean).length;
-    const summaryWordCount = summary.split(/\s+/).filter(Boolean).length;
-
-    if (titleWordCount > 12) {
-        alert("Post title must be 12 words or fewer.");
-        e.preventDefault();
-        return;
-    }
-
-    if (summaryWordCount > 20) {
-        alert("Summary must be 20 words or fewer.");
-        e.preventDefault();
-    }
-});
-
 </script>
 
+<!-- Styling -->
 <style>
-    body {
-        font-family: 'Poppins', sans-serif;
-        background-color: #f4f4f4;
-    }
-
-.nav-bar {
-    background-color: #145eae;
-    padding: 0.75rem 1rem;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-}
-
-.nav-btn-custom {
-    background-color: #ffffff;
-    color: #145eae;
-    border: 1px solid #cfd7df;
-    border-radius: 6px;
-    height: 32px;
-    line-height: 32px;
-    padding: 0 12px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    text-decoration: none;
-    display: inline-block;
-}
-
-.nav-btn-custom:hover {
-    background-color: #e7f0fa;
-    color: #0d498d;
-}
-
-.nav-btn-custom.active {
-    background-color: #e2e6ea;
-    color: black;
-    border-color: #ced4da;
-    pointer-events: none;
-}
-
-
-.nav-container button.active {
-    background-color: #d1e8ff;
-    border-color: #007bff;
-    font-weight: 600;
-}
-
-
-    .form-label {
-        font-weight: 400;
-        display: block;
-        margin-bottom: 5px;
-        text-align: left;
-    }
-
-    input[type="text"],
-    input[type="email"],
-    input[type="url"],
-    input[type="number"],
-    textarea,
-    select {
-        width: 100%;
-        padding: 10px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        font-size: 1rem;
-        margin-bottom: 1rem;
-    }
-
-    .card-selector-container {
-        display: flex;
-        gap: 20px;
-        justify-content: space-between;
-        flex-wrap: wrap;
-    }
-
-    .listing-card {
-        flex: 1 1 calc(50% - 10px);
-        background-color: #fff;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        padding: 20px;
-        box-sizing: border-box;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        outline: none;
-    }
-
-    .listing-card:hover {
-        background-color: #f0f8ff;
-    }
-
-    .listing-card.active {
-        background-color: #e9f5ff;
-    }
-
-    .listing-card:focus-visible {
-        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
-    }
-
-    .card-title {
-    display: inline-block;
-    padding: 6px 12px;
-    background-color: #f0f4fa;
-    border: 1px solid #b0c7e8;
-    border-radius: 6px;
-    font-size: 1rem;
-    font-weight: 600;
-    color: #145eae;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
-    margin-bottom: 1rem;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.listing-card:hover .card-title {
-    background-color: #dceeff;
-    color: #0d498d;
-    cursor: pointer;
-}
-
-
-    .card-title {
-        font-size: 1.2rem;
-        font-weight: 500;
-        margin-bottom: 1rem;
-    }
-
-    .card-text {
-        font-size: 0.9rem;
-        color: #333;
-        line-height: 1.5;
-    }
-
-    .submit-btn {
-        background-color: #6c757d;
-        color: white;
-        padding: 12px;
-        border: none;
-        font-weight: 500;
-        border-radius: 4px;
+    .toggle-btn {
         font-size: 16px;
+        font-weight: 600;
+        border: none;
+        outline: none;
         cursor: pointer;
+        padding: 10px 20px;
+        transition: background-color 0.2s ease-in-out;
     }
 
-    .submit-btn:disabled {
-        background-color: #cccccc;
-        cursor: not-allowed;
-    }
-
-    .submit-btn:hover:not(:disabled) {
-        background-color: #5a6268;
+    .divider {
+        height: 1px;
+        background-color: #ddd;
+        margin: 10px 0;
     }
 </style>
 
 </body>
 </html>
-
 
